@@ -19,7 +19,6 @@ configurations {
     compileJava.dependsOn("filterJava")
     project.ext.buildNumber = System.getenv("BUILD_NUMBER") ?: "0"
     project.version += ".${buildNumber}"
-    project.logger.warn(project.version)
 }
 
 repositories {
