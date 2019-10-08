@@ -94,6 +94,7 @@ function request() {
 }
 
 # SpongePowered/Ore - Authenticate
+echo "Requesting Session Token...";
 ORE_SESSION=$(request \
 --header "Authorization: OreApi apikey=$ORE_KEY" \
 --form "fake=false" \
@@ -102,6 +103,7 @@ if [[ -z "$ORE_SESSION" ]]; then
   exit 1;
 fi
 
+echo "Extracting Session Token...";
 ORE_SESSION_KEY=$(jq ".session");
 if [[ -z "$ORE_SESSION_KEY" ]]; then
   echo "Missing ORE_SESSION_KEY";
@@ -117,6 +119,7 @@ ORE_PLUGIN_INFO="{
 }";
 
 # SpongePowered/Ore - Deploy Version
+echo "Uploading $ARTIFACT_FILE...";
 ORE_VERSION=$(request \
 --header "Authorization: OreApi session=$ORE_SESSION_KEY" \
 --form "plugin-info=$ORE_PLUGIN_INFO" \
