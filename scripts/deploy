@@ -111,11 +111,11 @@ if [[ -z "$ORE_SESSION_KEY" ]]; then
 fi
 
 ORE_PLUGIN_INFO="{
-  \"recommended:\" $ORE_RECOMMENDED,
-  \"create_forum_post: $ORE_CREATE_FORUM_POST\",
-  \"tags: {
-    \"Channel\": $ORE_CHANNEL
-  }\"
+  \"recommended\": $ORE_RECOMMENDED,
+  \"create_forum_post\": $ORE_CREATE_FORUM_POST,
+  \"tags\": {
+    \"Channel\": \"$ORE_CHANNEL\"
+  }
 }";
 
 # SpongePowered/Ore - Deploy Version
