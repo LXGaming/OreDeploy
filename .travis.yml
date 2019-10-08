@@ -7,6 +7,7 @@ jdk:
 
 env:
   global:
+    - BUILD_NUMBER="$TRAVIS_BUILD_NUMBER"
     - ARTIFACT_NAME="OreDeploy-*.jar"
     - ORE_CHANNEL=release
     - ORE_RECOMMENDED=false
