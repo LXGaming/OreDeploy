@@ -32,5 +32,12 @@ install:
 script:
   - ./gradlew clean build
 
+deploy:
+  provider: script
+  script: bash scripts/deploy
+  skip_cleanup: true
+  on:
+    branch: master
+
 notifications:
   email: false

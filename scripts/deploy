@@ -1,0 +1,130 @@
+#!/bin/bash
+
+# Travis CI
+if [ "$TRAVIS" != "true" ]; then
+  echo "Invalid TRAVIS";
+  exit 1;
+fi
+
+if [ -z "$TRAVIS_BUILD_NUMBER" ]; then
+  echo "Missing TRAVIS_BUILD_NUMBER";
+  exit 1;
+fi
+
+if [ ! "$TRAVIS_JOB_NUMBER" =~ /\d+\.1$/ ]; then
+  echo "Invalid TRAVIS_JOB_NUMBER";
+  exit 1;
+fi
+
+if [ "$TRAVIS_PULL_REQUEST" != "false" ]; then
+  echo "Invalid TRAVIS_PULL_REQUEST";
+  exit 1;
+fi
+
+# Artifact
+if [ -z "$ARTIFACT_NAME" ]; then
+  echo "Missing ARTIFACT_NAME";
+  exit 1;
+fi
+
+ARTIFACT_FILE=$(find build/libs/ -type f -maxdepth 1 -iname "$ARTIFACT_NAME" | head -n 1);
+if [ -z "$ARTIFACT_FILE" ]; then
+  echo "Missing ARTIFACT_FILE";
+  exit 1;
+fi
+
+# SpongePowered/Ore
+if [ -z "$ORE_KEY" ]; then
+  echo "Missing ORE_KEY";
+  exit 1;
+fi
+
+if [ -z "$ORE_RECOMMENDED" ]; then
+  echo "Missing ORE_RECOMMENDED";
+  exit 1;
+fi
+
+if [ "$ORE_RECOMMENDED" != "true" ] && [ "$ORE_RECOMMENDED" != "false" ]; then
+  echo "Invalid ORE_RECOMMENDED";
+  exit 1;
+fi
+
+if [ -z "$ORE_CREATE_FORUM_POST" ]; then
+  echo "Missing ORE_CREATE_FORUM_POST";
+  exit 1;
+fi
+
+if [ "$ORE_CREATE_FORUM_POST" != "true" ] && [ "$ORE_CREATE_FORUM_POST" != "false" ]; then
+  echo "Invalid ORE_CREATE_FORUM_POST";
+  exit 1;
+fi
+
+if [ -z "$ORE_DESCRIPTION" ]; then
+  echo "Missing ORE_DESCRIPTION";
+  exit 1;
+fi
+
+if [ -z "$ORE_CHANNEL" ]; then
+  echo "Missing ORE_CHANNEL";
+  exit 1;
+fi
+
+if [ -z "$ORE_PLUGIN_ID" ]; then
+  echo "Missing ORE_PLUGIN_ID";
+  exit 1;
+fi
+
+function request() {
+  local response=$(curl --silent --write-out "\n%{http_code}" $@);
+  local body=$(echo "$response" | head -n -1);
+  local status=$(echo "$response" | tail -n 1);
+
+  # 200 OK, 201 Created, 204 No Content
+  if [ "$status" == 200 ] || [ "$status" == 201 ] || [ "$status" == 204 ]; then
+    echo "$body";
+    return 0;
+  fi
+
+  echo "Invalid response: $body ($status)"
+  if [ "$STATUS" =~ "^[0-9]+$" ]; then
+    return $status;
+  fi
+
+  return -1;
+}
+
+# SpongePowered/Ore - Authenticate
+ORE_SESSION=$(request \
+--header "Authorization: OreApi apikey=$ORE_KEY" \
+--form "fake=false" \
+"https://ore.stage.spongemc.org/api/v2/authenticate");
+if [ -z "$ORE_SESSION" ]; then
+  exit 1;
+fi
+
+ORE_SESSION_KEY=$(jq ".session");
+if [ -z "$ORE_SESSION_KEY" ]; then
+  echo "Missing ORE_SESSION_KEY";
+  exit 1;
+fi
+
+ORE_PLUGIN_INFO="{
+  \"recommended:\" $ORE_RECOMMENDED,
+  \"create_forum_post: $ORE_CREATE_FORUM_POST\",
+  \"tags: {
+    \"Channel\": $ORE_CHANNEL
+  }\"
+}";
+
+# SpongePowered/Ore - Deploy Version
+ORE_VERSION=$(request \
+--header "Authorization: OreApi session=$ORE_SESSION_KEY" \
+--form "plugin-info=$ORE_PLUGIN_INFO" \
+--form "plugin-file=@$ARTIFACT_FILE" \
+"https://ore.stage.spongemc.org/api/v2/projects/$ORE_PLUGIN_ID/versions");
+if [ -z "$ORE_VERSION" ]; then
+  exit 1;
+fi
+
+echo "$ORE_VERSION";
+exit 0;
