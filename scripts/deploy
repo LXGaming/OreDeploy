@@ -11,7 +11,7 @@ if [ -z "$TRAVIS_BUILD_NUMBER" ]; then
   exit 1;
 fi
 
-if [ ! "$TRAVIS_JOB_NUMBER" =~ /\d+\.1$/ ]; then
+if [[ ! "$TRAVIS_JOB_NUMBER" =~ ^[0-9]+\.1$ ]]; then
   echo "Invalid TRAVIS_JOB_NUMBER";
   exit 1;
 fi
@@ -86,7 +86,7 @@ function request() {
   fi
 
   echo "Invalid response: $body ($status)"
-  if [ "$STATUS" =~ "^[0-9]+$" ]; then
+  if [[ "$status" =~ "^[0-9]+$" ]]; then
     return $status;
   fi
 
