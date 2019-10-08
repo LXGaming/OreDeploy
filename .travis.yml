@@ -9,9 +9,11 @@ env:
   global:
     - BUILD_NUMBER="$TRAVIS_BUILD_NUMBER"
     - ARTIFACT_NAME="OreDeploy-*.jar"
-    - ORE_CHANNEL=release
-    - ORE_RECOMMENDED=false
-    - ORE_PLUGIN_ID=oredeploy
+    - ORE_RECOMMENDED="false"
+    - ORE_CREATE_FORUM_POST="false"
+    - ORE_DESCRIPTION="Automated deployment to SpongePowered/Ore"
+    - ORE_CHANNEL="release"
+    - ORE_PLUGIN_ID="oredeploy"
 
 before_cache:
   - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
