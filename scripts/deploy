@@ -13,12 +13,12 @@ fi
 
 if [[ ! "$TRAVIS_JOB_NUMBER" =~ ^[0-9]+\.1$ ]]; then
   echo "Invalid TRAVIS_JOB_NUMBER";
-  exit 1;
+  exit 0;
 fi
 
 if [[ "$TRAVIS_PULL_REQUEST" != false ]]; then
   echo "Invalid TRAVIS_PULL_REQUEST";
-  exit 1;
+  exit 0;
 fi
 
 # Artifact
