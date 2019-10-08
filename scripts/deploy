@@ -104,7 +104,7 @@ if [[ -z "$ORE_SESSION" ]]; then
 fi
 
 echo "Extracting Session Token...";
-ORE_SESSION_KEY=$(jq ".session");
+ORE_SESSION_KEY=$(echo "$ORE_SESSION" | jq ".session");
 if [[ -z "$ORE_SESSION_KEY" ]]; then
   echo "Missing ORE_SESSION_KEY";
   exit 1;
