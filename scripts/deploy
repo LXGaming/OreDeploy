@@ -75,7 +75,7 @@ if [[ -z "$ORE_PLUGIN_ID" ]]; then
 fi
 
 function request() {
-  local response=$(curl --silent --write-out "\n%{http_code}" $@);
+  local response=$(curl --silent --write-out "\n%{http_code}" "$@");
   local body=$(echo "$response" | head -n -1);
   local status=$(echo "$response" | tail -n 1);
 
