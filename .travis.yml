@@ -13,7 +13,7 @@ env:
     - ARTIFACT_NAME="OreDeploy-*.jar"
     - ORE_RECOMMENDED="false"
     - ORE_CREATE_FORUM_POST="false"
-    - ORE_DESCRIPTION="Automated deployment to SpongePowered/Ore"
+    - ORE_DESCRIPTION="$TRAVIS_COMMIT_MESSAGE"
     - ORE_CHANNEL="release"
     - ORE_PLUGIN_ID="oredeploy"
 
