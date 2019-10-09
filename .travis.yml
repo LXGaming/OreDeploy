@@ -8,6 +8,8 @@ jdk:
 env:
   global:
     - BUILD_NUMBER="$TRAVIS_BUILD_NUMBER"
+    - CI_SYSTEM="Travis CI"
+    - GIT_COMMIT="$TRAVIS_COMMIT"
     - ARTIFACT_NAME="OreDeploy-*.jar"
     - ORE_RECOMMENDED="false"
     - ORE_CREATE_FORUM_POST="false"
