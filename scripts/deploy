@@ -44,9 +44,9 @@ if [[ -z "$ORE_ENVIRONMENT" ]]; then
   echo "Missing ORE_ENVIRONMENT";
   exit 1;
 elif [[ "${ORE_ENVIRONMENT,,}" == "production" ]]; then
-  $ORE_HOST="ore.spongepowered.org";
+  ORE_HOST="ore.spongepowered.org";
 elif [[ "${ORE_ENVIRONMENT,,}" == "staging" ]]; then
-  $ORE_HOST="ore.stage.spongemc.org";
+  ORE_HOST="ore.stage.spongemc.org";
 else
   echo "Invalid ORE_ENVIRONMENT";
   exit 1;
