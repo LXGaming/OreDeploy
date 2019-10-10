@@ -52,16 +52,6 @@ else
   exit 1;
 fi
 
-if [[ -z "$ORE_RECOMMENDED" ]]; then
-  echo "Missing ORE_RECOMMENDED";
-  exit 1;
-fi
-
-if [[ "$ORE_RECOMMENDED" != true ]] && [[ "$ORE_RECOMMENDED" != false ]]; then
-  echo "Invalid ORE_RECOMMENDED";
-  exit 1;
-fi
-
 if [[ -z "$ORE_CREATE_FORUM_POST" ]]; then
   echo "Missing ORE_CREATE_FORUM_POST";
   exit 1;
@@ -128,15 +118,13 @@ if [[ -z "$ORE_PLUGIN_INFO_TAGS" ]]; then
 fi
 
 ORE_PLUGIN_INFO=$(jq --null-input --compact-output --raw-output \
---arg key0 "recommended" \
---argjson value0 "$ORE_RECOMMENDED" \
---arg key1 "create_forum_post" \
---argjson value1 "$ORE_CREATE_FORUM_POST" \
---arg key2 "description" \
---arg value2 "$ORE_DESCRIPTION" \
---arg key3 "tags" \
---argjson value3 "$ORE_PLUGIN_INFO_TAGS" \
-'. | .[$key0]=$value0 | .[$key1]=$value1 | .[$key2]=$value2 | .[$key3]=$value3');
+--arg key0 "create_forum_post" \
+--argjson value0 "$ORE_CREATE_FORUM_POST" \
+--arg key1 "description" \
+--arg value1 "$ORE_DESCRIPTION" \
+--arg key2 "tags" \
+--argjson value2 "$ORE_PLUGIN_INFO_TAGS" \
+'. | .[$key0]=$value0 | .[$key1]=$value1 | .[$key2]=$value2');
 if [[ -z "$ORE_PLUGIN_INFO" ]]; then
   echo "Missing ORE_PLUGIN_INFO";
   exit 1;

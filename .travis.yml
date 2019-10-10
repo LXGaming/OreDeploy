@@ -11,7 +11,6 @@ env:
     - CI_SYSTEM="Travis CI"
     - GIT_COMMIT="$TRAVIS_COMMIT"
     - ARTIFACT_NAME="OreDeploy-*.jar"
-    - ORE_RECOMMENDED="false"
     - ORE_ENVIRONMENT="staging" # production | staging
     - ORE_CREATE_FORUM_POST="false" # false | true
     - ORE_DESCRIPTION="$TRAVIS_COMMIT_MESSAGE"
