@@ -111,14 +111,29 @@ if [[ -z "$ORE_SESSION_KEY" ]]; then
   exit 1;
 fi
 
-ORE_PLUGIN_INFO="{
-  \"recommended\": $ORE_RECOMMENDED,
-  \"create_forum_post\": $ORE_CREATE_FORUM_POST,
-  \"description\": \"$ORE_DESCRIPTION\",
-  \"tags\": {
-    \"Channel\": \"$ORE_CHANNEL\"
-  }
-}";
+ORE_PLUGIN_INFO_TAGS=$(jq --null-input --compact-output --raw-output \
+--arg key0 "Channel" \
+--arg value0 "$ORE_CHANNEL" \
+'. | .[$key0]=$value0');
+if [[ -z "$ORE_PLUGIN_INFO_TAGS" ]]; then
+  echo "Missing ORE_PLUGIN_INFO_TAGS";
+  exit 1;
+fi
+
+ORE_PLUGIN_INFO=$(jq --null-input --compact-output --raw-output \
+--arg key0 "recommended" \
+--argjson value0 "$ORE_RECOMMENDED" \
+--arg key1 "create_forum_post" \
+--argjson value1 "$ORE_CREATE_FORUM_POST" \
+--arg key2 "description" \
+--arg value2 "$ORE_DESCRIPTION" \
+--arg key3 "tags" \
+--argjson value3 "$ORE_PLUGIN_INFO_TAGS" \
+'. | .[$key0]=$value0 | .[$key1]=$value1 | .[$key2]=$value2 | .[$key3]=$value3');
+if [[ -z "$ORE_PLUGIN_INFO" ]]; then
+  echo "Missing ORE_PLUGIN_INFO";
+  exit 1;
+fi
 
 # SpongePowered/Ore - Deploy Version
 echo "Uploading $ARTIFACT_FILE...";
