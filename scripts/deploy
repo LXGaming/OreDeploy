@@ -1,4 +1,6 @@
 #!/bin/bash
+# Author: LX_Gaming
+# Source: https://github.com/LXGaming/OreDeploy
 
 # Travis CI
 if [[ "$TRAVIS" != true ]]; then
