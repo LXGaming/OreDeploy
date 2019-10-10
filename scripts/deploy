@@ -93,18 +93,19 @@ function request() {
 # SpongePowered/Ore - Authenticate
 # - expiresIn = 10 minutes
 echo "Requesting Session Token...";
-ORE_SESSION=$(request \
+ORE_AUTHENTICATE=$(request \
 --request "POST" \
 --header "Authorization: OreApi apikey=$ORE_KEY" \
 --form "fake=false" \
 --form "expiresIn=600" \
 "https://$ORE_HOST/api/v2/authenticate");
-if [[ -z "$ORE_SESSION" ]] || [[ $? != 0 ]]; then
+ORE_AUTHENTICATE_STATE=$?;
+if [[ -z "$ORE_AUTHENTICATE" ]] || [[ "$ORE_AUTHENTICATE_STATE" != 0 ]]; then
   exit 1;
 fi
 
 echo "Extracting Session Token...";
-ORE_SESSION_KEY=$(echo "$ORE_SESSION" | jq --raw-output ".session");
+ORE_SESSION_KEY=$(echo "$ORE_AUTHENTICATE" | jq --raw-output ".session");
 if [[ -z "$ORE_SESSION_KEY" ]]; then
   echo "Missing ORE_SESSION_KEY";
   exit 1;
@@ -134,25 +135,27 @@ fi
 
 # SpongePowered/Ore - Deploy Version
 echo "Uploading $ARTIFACT_FILE...";
-ORE_VERSION=$(request \
+ORE_DEPLOY=$(request \
 --request "POST" \
 --header "Authorization: OreApi session=$ORE_SESSION_KEY" \
 --form "plugin-info=$ORE_PLUGIN_INFO" \
 --form "plugin-file=@$ARTIFACT_FILE" \
 "https://$ORE_HOST/api/v2/projects/$ORE_PLUGIN_ID/versions");
-if [[ -z "$ORE_VERSION" ]] || [[ $? != 0 ]]; then
+ORE_DEPLOY_STATE=$?;
+if [[ -z "$ORE_DEPLOY" ]] || [[ "$ORE_DEPLOY_STATE" != 0 ]]; then
   exit 1;
 fi
 
-echo "$ORE_VERSION";
+echo "$ORE_DEPLOY";
 
 # SpongePowered/Ore - Invalidate
 echo "Invalidating Session Token...";
-ORE_SESSION=$(request \
+ORE_INVALIDATE=$(request \
 --request "DELETE" \
 --header "Authorization: OreApi session=$ORE_SESSION_KEY" \
 "https://$ORE_HOST/api/v2/sessions/current");
-if [[ -z "$ORE_SESSION" ]] || [[ $? != 0 ]]; then
+ORE_INVALIDATE_STATE=$?;
+if [[ -z "$ORE_INVALIDATE" ]] || [[ "$ORE_INVALIDATE_STATE" != 0 ]]; then
   exit 0;
 fi
 
