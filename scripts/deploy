@@ -91,11 +91,13 @@ function request() {
 }
 
 # SpongePowered/Ore - Authenticate
+# - expiresIn = 10 minutes
 echo "Requesting Session Token...";
 ORE_SESSION=$(request \
 --request "POST" \
 --header "Authorization: OreApi apikey=$ORE_KEY" \
 --form "fake=false" \
+--form "expiresIn=600" \
 "https://$ORE_HOST/api/v2/authenticate");
 if [[ -z "$ORE_SESSION" ]] || [[ $? != 0 ]]; then
   exit 1;
@@ -143,4 +145,15 @@ if [[ -z "$ORE_VERSION" ]] || [[ $? != 0 ]]; then
 fi
 
 echo "$ORE_VERSION";
+
+# SpongePowered/Ore - Invalidate
+echo "Invalidating Session Token...";
+ORE_SESSION=$(request \
+--request "DELETE" \
+--header "Authorization: OreApi session=$ORE_SESSION_KEY" \
+"https://$ORE_HOST/api/v2/sessions/current");
+if [[ -z "$ORE_SESSION" ]] || [[ $? != 0 ]]; then
+  exit 0;
+fi
+
 exit 0;
