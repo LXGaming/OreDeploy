@@ -39,6 +39,19 @@ if [[ -z "$ORE_KEY" ]]; then
   exit 1;
 fi
 
+ORE_HOST="";
+if [[ -z "$ORE_ENVIRONMENT" ]]; then
+  echo "Missing ORE_ENVIRONMENT";
+  exit 1;
+elif [[ "${ORE_ENVIRONMENT,,}" == "production" ]]; then
+  $ORE_HOST="ore.spongepowered.org";
+elif [[ "${ORE_ENVIRONMENT,,}" == "staging" ]]; then
+  $ORE_HOST="ore.stage.spongemc.org";
+else
+  echo "Invalid ORE_ENVIRONMENT";
+  exit 1;
+fi
+
 if [[ -z "$ORE_RECOMMENDED" ]]; then
   echo "Missing ORE_RECOMMENDED";
   exit 1;
@@ -97,7 +110,7 @@ ORE_SESSION=$(request \
 --request "POST" \
 --header "Authorization: OreApi apikey=$ORE_KEY" \
 --form "fake=false" \
-"https://ore.stage.spongemc.org/api/v2/authenticate");
+"https://$ORE_HOST/api/v2/authenticate");
 if [[ -z "$ORE_SESSION" ]]; then
   exit 1;
 fi
@@ -140,7 +153,7 @@ ORE_VERSION=$(request \
 --header "Authorization: OreApi session=$ORE_SESSION_KEY" \
 --form "plugin-info=$ORE_PLUGIN_INFO" \
 --form "plugin-file=@$ARTIFACT_FILE" \
-"https://ore.stage.spongemc.org/api/v2/projects/$ORE_PLUGIN_ID/versions");
+"https://$ORE_HOST/api/v2/projects/$ORE_PLUGIN_ID/versions");
 if [[ -z "$ORE_VERSION" ]]; then
   exit 1;
 fi
