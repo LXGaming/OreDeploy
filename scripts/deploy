@@ -96,6 +96,7 @@ function request() {
 # SpongePowered/Ore - Authenticate
 echo "Requesting Session Token...";
 ORE_SESSION=$(request \
+--request "POST" \
 --header "Authorization: OreApi apikey=$ORE_KEY" \
 --form "fake=false" \
 "https://ore.stage.spongemc.org/api/v2/authenticate");
@@ -122,6 +123,7 @@ ORE_PLUGIN_INFO="{
 # SpongePowered/Ore - Deploy Version
 echo "Uploading $ARTIFACT_FILE...";
 ORE_VERSION=$(request \
+--request "POST" \
 --header "Authorization: OreApi session=$ORE_SESSION_KEY" \
 --form "plugin-info=$ORE_PLUGIN_INFO" \
 --form "plugin-file=@$ARTIFACT_FILE" \
