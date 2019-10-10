@@ -96,12 +96,8 @@ function request() {
     return 0;
   fi
 
-  echo "Invalid response: $body ($status)"
-  if [[ "$status" =~ "^[0-9]+$" ]]; then
-    return $status;
-  fi
-
-  return -1;
+  echo "Invalid response: $body ($status)" >&2;
+  return 1;
 }
 
 # SpongePowered/Ore - Authenticate
@@ -111,7 +107,7 @@ ORE_SESSION=$(request \
 --header "Authorization: OreApi apikey=$ORE_KEY" \
 --form "fake=false" \
 "https://$ORE_HOST/api/v2/authenticate");
-if [[ -z "$ORE_SESSION" ]]; then
+if [[ -z "$ORE_SESSION" ]] || [[ $? != 0 ]]; then
   exit 1;
 fi
 
@@ -154,7 +150,7 @@ ORE_VERSION=$(request \
 --form "plugin-info=$ORE_PLUGIN_INFO" \
 --form "plugin-file=@$ARTIFACT_FILE" \
 "https://$ORE_HOST/api/v2/projects/$ORE_PLUGIN_ID/versions");
-if [[ -z "$ORE_VERSION" ]]; then
+if [[ -z "$ORE_VERSION" ]] || [[ $? != 0 ]]; then
   exit 1;
 fi
 
