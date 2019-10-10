@@ -52,9 +52,7 @@ fi
 if [[ -z "$ORE_CREATE_FORUM_POST" ]]; then
   echo "Missing ORE_CREATE_FORUM_POST";
   exit 1;
-fi
-
-if [[ "$ORE_CREATE_FORUM_POST" != true ]] && [[ "$ORE_CREATE_FORUM_POST" != false ]]; then
+elif [[ "$ORE_CREATE_FORUM_POST" != false ]] && [[ "$ORE_CREATE_FORUM_POST" != true ]]; then
   echo "Invalid ORE_CREATE_FORUM_POST";
   exit 1;
 fi
