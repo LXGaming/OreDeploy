@@ -97,6 +97,7 @@ function request() {
 echo "Requesting Session Token...";
 ORE_AUTHENTICATE=$(request \
 --request "POST" \
+--header "Accept: application/json" \
 --header "Authorization: OreApi apikey=$ORE_KEY" \
 --form "fake=false" \
 --form "expiresIn=600" \
@@ -139,6 +140,7 @@ fi
 echo "Uploading $ARTIFACT_FILE...";
 ORE_DEPLOY=$(request \
 --request "POST" \
+--header "Accept: application/json" \
 --header "Authorization: OreApi session=$ORE_SESSION_KEY" \
 --form "plugin-info=$ORE_PLUGIN_INFO" \
 --form "plugin-file=@$ARTIFACT_FILE" \
@@ -154,6 +156,7 @@ echo "$ORE_DEPLOY";
 echo "Invalidating Session Token...";
 ORE_INVALIDATE=$(request \
 --request "DELETE" \
+--header "Accept: application/json" \
 --header "Authorization: OreApi session=$ORE_SESSION_KEY" \
 "https://$ORE_HOST/api/v2/sessions/current");
 ORE_INVALIDATE_STATE=$?;
