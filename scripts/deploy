@@ -155,10 +155,11 @@ echo "$ORE_DEPLOY";
 
 # SpongePowered/Ore - Invalidate
 echo "Invalidating Session Token...";
-ORE_INVALIDATE=$(request \
+ORE_INVALIDATE=$(request --get \
 --request "DELETE" \
 --header "Accept: application/json" \
 --header "Authorization: OreApi session=$ORE_SESSION_KEY" \
+--data-urlencode "session=$ORE_SESSION_KEY" \
 "https://$ORE_HOST/api/v2/sessions/current");
 ORE_INVALIDATE_STATE=$?;
 if [[ -z "$ORE_INVALIDATE" ]] || [[ "$ORE_INVALIDATE_STATE" != 0 ]]; then
