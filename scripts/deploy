@@ -92,6 +92,17 @@ function request() {
   return 1;
 }
 
+ORE_AUTHENTICATE_PROPERTIES=$(jq --null-input --compact-output --raw-output \
+--arg key0 "fake" \
+--argjson value0 "false" \
+--arg key1 "expires_in" \
+--argjson value1 "600" \
+'. | .[$key0]=$value0 | .[$key1]=$value1');
+if [[ -z "$ORE_AUTHENTICATE_PROPERTIES" ]]; then
+  echo "Missing ORE_AUTHENTICATE_PROPERTIES";
+  exit 1;
+fi
+
 # SpongePowered/Ore - Authenticate
 # - expiresIn = 10 minutes
 echo "Requesting Session Token...";
@@ -99,8 +110,8 @@ ORE_AUTHENTICATE=$(request \
 --request "POST" \
 --header "Accept: application/json" \
 --header "Authorization: OreApi apikey=$ORE_KEY" \
---form "fake=false" \
---form "expiresIn=600" \
+--header "Content-Type: application/json" \
+--data "$ORE_AUTHENTICATE_PROPERTIES" \
 "https://$ORE_HOST/api/v2/authenticate");
 ORE_AUTHENTICATE_STATE=$?;
 if [[ -z "$ORE_AUTHENTICATE" ]] || [[ "$ORE_AUTHENTICATE_STATE" != 0 ]]; then
