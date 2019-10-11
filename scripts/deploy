@@ -142,6 +142,7 @@ ORE_DEPLOY=$(request \
 --request "POST" \
 --header "Accept: application/json" \
 --header "Authorization: OreApi session=$ORE_SESSION_KEY" \
+--header "Content-Type: multipart/form-data" \
 --form "plugin-info=$ORE_PLUGIN_INFO" \
 --form "plugin-file=@$ARTIFACT_FILE" \
 "https://$ORE_HOST/api/v2/projects/$ORE_PLUGIN_ID/versions");
