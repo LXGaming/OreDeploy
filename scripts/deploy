@@ -93,11 +93,9 @@ function request() {
 }
 
 ORE_AUTHENTICATE_PROPERTIES=$(jq --null-input --compact-output --raw-output \
---arg key0 "fake" \
---argjson value0 "false" \
---arg key1 "expires_in" \
---argjson value1 "600" \
-'. | .[$key0]=$value0 | .[$key1]=$value1');
+--arg key0 "expires_in" \
+--argjson value0 "600" \
+'. | .[$key0]=$value0');
 if [[ -z "$ORE_AUTHENTICATE_PROPERTIES" ]]; then
   echo "Missing ORE_AUTHENTICATE_PROPERTIES";
   exit 1;
