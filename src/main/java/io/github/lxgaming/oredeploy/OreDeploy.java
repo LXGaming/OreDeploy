@@ -17,21 +17,28 @@
 package io.github.lxgaming.oredeploy;
 
 import com.google.inject.Inject;
-import io.github.lxgaming.oredeploy.util.Reference;
 import org.slf4j.Logger;
 import org.spongepowered.api.event.Listener;
 import org.spongepowered.api.event.game.state.GameConstructionEvent;
 import org.spongepowered.api.plugin.Plugin;
 
 @Plugin(
-        id = Reference.ID,
-        name = Reference.NAME,
-        version = Reference.VERSION,
-        description = Reference.DESCRIPTION,
-        authors = {Reference.AUTHORS},
-        url = Reference.WEBSITE
+        id = OreDeploy.ID,
+        name = OreDeploy.NAME,
+        version = OreDeploy.VERSION,
+        description = OreDeploy.DESCRIPTION,
+        authors = {OreDeploy.AUTHORS},
+        url = OreDeploy.WEBSITE
 )
 public class OreDeploy {
+    
+    public static final String ID = "oredeploy";
+    public static final String NAME = "OreDeploy";
+    public static final String VERSION = "${version}";
+    public static final String DESCRIPTION = "Automated deployment to SpongePowered/Ore";
+    public static final String AUTHORS = "LX_Gaming";
+    public static final String SOURCE = "https://github.com/LXGaming/OreDeploy";
+    public static final String WEBSITE = "https://lxgaming.github.io/";
     
     private static OreDeploy instance;
     
@@ -41,7 +48,7 @@ public class OreDeploy {
     @Listener
     public void onConstruction(GameConstructionEvent event) {
         instance = this;
-        getLogger().info("{} v{} constructed", Reference.NAME, Reference.VERSION);
+        getLogger().info("{} v{} constructed", OreDeploy.NAME, OreDeploy.VERSION);
     }
     
     public static OreDeploy getInstance() {
