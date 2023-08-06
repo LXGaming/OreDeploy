@@ -7,7 +7,7 @@
 Create an Ore API Key with the permission `create_version`.
 
 ### [Travis CI](https://travis-ci.com/)
-![Travis Environment Variables](https://lxgaming.github.io/images/oredeploy/travis-environment-variables.png)
+![Travis Environment Variables](https://github.com/LXGaming/OreDeploy/assets/10443061/b55e831b-cf93-45c9-ba45-89331e90eee7)
 Add your Ore API Key as a environment variable, make sure you specify the `master` branch and ensure `Display value in build log` is disabled.
 
 ### Project
